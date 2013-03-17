@@ -1,7 +1,7 @@
 #!/bin/env bash
 #
 #  install-python.bash is a script that may install python and a huge number
-#                      of usefull modules such as numpy and such
+#                      of usefull modules
 #
 #  (C) Copyright 2013 Olivier Delhomme
 #  e-mail : olivier.delhomme@free.fr
