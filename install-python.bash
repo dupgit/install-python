@@ -21,6 +21,11 @@
 #  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #
+# Please make sure you have installed the following in your system :
+# cmake, blas-devel lapack-devel
+#
+
+#
 # Below some variables that you can adapt
 #
 
@@ -106,7 +111,7 @@ mkdir -p $TMPDIR
 
 
 ###
-# Downloading and uncompressing python
+# Downloading and uncompressing python itself
 #
 get_and_uncompress $PYTHON_URL $PYTHON_FILE zxvf
 
@@ -191,6 +196,7 @@ cleaning_a_bit $HDF5_DIR $HDF5_FILE
 # Variable that may be used to know where hdf5 has been installed
 export HDF5_DIR=$CONF_PREFIX
 
+
 ###
 # Installing h5py because the hdf5 library is in a specific directory
 #
@@ -200,7 +206,7 @@ cd h5py/h5py
 python api_gen.py
 cd ..
 python setup.py build --hdf5=$CONF_PREFIX
-#python setup.py install
+python setup.py install
 
 cleaning_a_bit h5py
 
@@ -209,8 +215,6 @@ cleaning_a_bit h5py
 #echo "[install]" > $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 #echo "install_lib = $CONF_PREFIX/lib/python2.7/site-packages" >> $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 #echo "install_scripts = $CONF_PREFIX/bin" >> $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
-
-
 
 # installing the packages that need vtk, hdf5, h5py and so on
 for package in graphcanvas; do
