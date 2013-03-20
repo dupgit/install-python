@@ -22,7 +22,7 @@
 
 #
 # Please make sure you have installed the following in your system :
-# cmake, blas-devel lapack-devel
+# cmake, blas-devel, lapack-devel
 #
 
 #
@@ -36,7 +36,7 @@ export https_proxy=""
 # Temporary directory where we will run the script.
 export TMPDIR="/tmp/install-python"
 
-# Path where to install python
+# Path where to install python. Make sure that you have write access here.
 export CONF_PREFIX="/usr/local/python/2.7.3"
 
 ############### There should be no need to change anything below ###############
@@ -117,7 +117,7 @@ get_and_uncompress $PYTHON_URL $PYTHON_FILE zxvf
 
 # Compiling python itself. Need the rights to write into $CONF_PREFIX directory
 cd PYTHON_DIR
-./configure --prefix=$CONF_PREFIX
+./configure --prefix=$CONF_PREFIX --enable-shared --enable-ipv6 --enable-unicode
 make $MAKE_ARGS
 make install
 
@@ -198,7 +198,7 @@ export HDF5_DIR=$CONF_PREFIX
 
 
 ###
-# Installing h5py because the hdf5 library is in a specific directory
+# Installing h5py by hand because the hdf5 library is in a specific directory
 #
 cd $TMPDIR
 git clone $H5PY_URL
@@ -217,7 +217,7 @@ cleaning_a_bit h5py
 #echo "install_scripts = $CONF_PREFIX/bin" >> $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 
 # installing the packages that need vtk, hdf5, h5py and so on
-for package in graphcanvas; do
+for package in ; do
     pip install $package;
 done
 

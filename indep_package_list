@@ -64,3 +64,6 @@ sympy
 tornado
 xlrd
 xlwt
+graphcanvas
+pyparsing==1.5.7
+pydot
