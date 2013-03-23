@@ -249,7 +249,7 @@ make install
 cd ..
 python setup.py install
 
-
+cleaning_a_bit $BASEMAP_DIR
 
 # Do we need this ?
 #echo "[install]" > $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
@@ -257,7 +257,7 @@ python setup.py install
 #echo "install_scripts = $CONF_PREFIX/bin" >> $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 
 # installing the packages that need vtk, hdf5, h5py and so on
-for package in ; do
+for package in ets; do
     pip install $package;
 done
 
