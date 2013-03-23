@@ -26,7 +26,7 @@
 #
 
 #
-# Below some variables that you can adapt
+# Below some variables that you can adapt to reflect the version you need
 #
 
 # Specify a proxy in the form http_proxy="http://user:pass@my.site:port/"
@@ -72,11 +72,18 @@ export HDF5_DIR="hdf5-1.8.10-patch1"
 # h5py
 export H5PY_URL="https://github.com/h5py/h5py.git"
 
+
+# basemap 1.0.6 (does not work with pip nor easy_install) :
+export BASEMAP_URL="http://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.6/basemap-1.0.6.tar.gz/download"
+export BASEMAP_FILE="basemap-1.0.6.tar.gz"
+export BASEMAP_DIR ="basemap-1.0.6"
+
+
 # Some arguments to make : be silent and use 8 threads
 export MAKE_ARGS="-s -j 8"
 
 ###
-# Begining of the script itself
+# Begining of the script itself : function definitions
 #
 
 ###
@@ -104,6 +111,23 @@ function get_and_uncompress {
 
 }
 
+
+###
+# Function that kills everything if needed. Used in a trap
+#
+function kill_everything {
+
+    kill 0;
+
+}
+
+
+###
+# Main script is begining here.
+#
+
+# Adding a trap if we want to kill everything
+trap kill_everything
 
 
 # Making the temporary directory and going into it to do the stuff
@@ -209,6 +233,21 @@ python setup.py build --hdf5=$CONF_PREFIX
 python setup.py install
 
 cleaning_a_bit h5py
+
+
+###
+# Installing basemap by hand (it does not work with pip nor easy_install)
+# Requires matplotlib, numpy, GEOS, PIL,
+#
+get_and_uncompress $BASEMAP_URL $BASEMAP_FILE zxvf
+cd $BASEMAP_DIR
+cd geos-3.3.3
+export GEOS_DIR=$CONF_PREFIX
+./configure --prefix=$GEOS_DIR
+make $MAKE_ARGS
+make install
+
+
 
 
 # Do we need this ?
