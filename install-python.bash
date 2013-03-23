@@ -246,7 +246,8 @@ export GEOS_DIR=$CONF_PREFIX
 ./configure --prefix=$GEOS_DIR
 make $MAKE_ARGS
 make install
-
+cd ..
+python setup.py install
 
 
 
