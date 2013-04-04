@@ -72,11 +72,15 @@ export HDF5_DIR="hdf5-1.8.10-patch1"
 # h5py
 export H5PY_URL="https://github.com/h5py/h5py.git"
 
-
 # basemap 1.0.6 (does not work with pip nor easy_install) :
 export BASEMAP_URL="http://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.6/basemap-1.0.6.tar.gz/download"
 export BASEMAP_FILE="basemap-1.0.6.tar.gz"
 export BASEMAP_DIR ="basemap-1.0.6"
+
+# SZIP needed for hdf4 which is needed for pyhdf
+export SZIP_URL="http://www.hdfgroup.org/ftp/lib-external/szip/2.1/src/szip-2.1.tar.gz"
+export SZIP_FILE="szip-2.1.tar.gz"
+export SZIP_DIR="szip-2.1"
 
 
 # Some arguments to make : be silent and use 8 threads
@@ -166,10 +170,16 @@ python setup.py install
 # Cleaning a bit
 cleaning_a_bit $SETUP_TOOLS_DIR $SETUP_TOOLS_FILE
 
+
+###
 # Installing pip with easy_install. We will use pip to install the other packages
+#
 easy_install pip
 
-# Installing packages that do not need anything else than themselves !
+
+###
+# Installing packages that do not need anything else than themselves with pip !
+#
 for package in $(cat indep_package_list); do
     pip install $package;
 done
@@ -194,6 +204,7 @@ export LD_LIBRARY_PATH=$CONF_PREFIX/lib:${LD_LIBRARY_PATH}
 
 # Cleaning a bit
 cleaning_a_bit $VTK_FILE $VTK_DIR
+
 
 ###
 # Installing wxpython
@@ -237,7 +248,7 @@ cleaning_a_bit h5py
 
 ###
 # Installing basemap by hand (it does not work with pip nor easy_install)
-# Requires matplotlib, numpy, GEOS, PIL,
+# Requires matplotlib, numpy, GEOS, PIL
 #
 get_and_uncompress $BASEMAP_URL $BASEMAP_FILE zxvf
 cd $BASEMAP_DIR
@@ -251,13 +262,26 @@ python setup.py install
 
 cleaning_a_bit $BASEMAP_DIR
 
+
+###
+# Installing SZIP (required for hdf4 which is required for pyhdf)
+#
+get_and_uncompress $SZIP_URL $SZIP_FILE zxvf
+cd $SZIP_DIR
+./configure --prefix=$CONF_PREFIX
+make $MAKE_ARGS
+make install
+
+cleaning_a_bit $SZIP_DIR
+
+
 # Do we need this ?
 #echo "[install]" > $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 #echo "install_lib = $CONF_PREFIX/lib/python2.7/site-packages" >> $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 #echo "install_scripts = $CONF_PREFIX/bin" >> $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 
 # installing the packages that need vtk, hdf5, h5py and so on
-for package in ets; do
+for package in ets etsproxy ; do
     pip install $package;
 done
 
