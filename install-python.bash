@@ -92,6 +92,7 @@ export MAKE_ARGS="-s -j 8"
 
 ###
 # Function that cleans files or directories
+# Arguments : files and directories to delete
 #
 function cleaning_a_bit {
 
