@@ -87,6 +87,11 @@ export HDF4_URL="http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.9.tar.g
 export HDF4_FILE="hdf-4.2.9.tar.gz"
 export HDF4_DIR="hdf-4.2.9"
 
+# pyhdf 0.8.3
+export PYHDF_URL="http://sourceforge.net/projects/pysclint/files/pyhdf/0.8.3/pyhdf-0.8.3.tar.gz/download"
+export PYHDF_FILE="pyhdf-0.8.3.tar.gz"
+export PYHDF_DIR="pyhdf-0.8.3"
+
 
 # Some arguments to make : be silent and use 8 threads
 export MAKE_ARGS="-s -j 8"
@@ -276,7 +281,7 @@ make install
 cd ..
 python setup.py install
 
-cleaning_a_bit $BASEMAP_DIR
+cleaning_a_bit $BASEMAP_DIR $BASEMAP_FILE
 
 
 ###
@@ -289,6 +294,19 @@ get_configure_make_install $SZIP_URL $SZIP_FILE zxvf $SZIP_DIR "--prefix=$CONF_P
 # Installing hdf4 with SZIP
 #
 get_configure_make_install $HDF4_URL $HDF4_FILE zxvf $HDF4_DIR "--prefix=$CONF_PREFIX --enable-shared --disable-fortran --with-szlib=$CONF_PREFIX"
+
+###
+# Installing pyhdf
+#
+get_and_uncompress $PYHDF_URL $PYHDF_FILE zxvf
+cd $PYHDF_DIR
+export INCLUDE_DIRS=$CONF_PREFIX/include
+export LIBRARY_DIRS=$CONF_PREFIX/lib
+python setup.py install
+unset INCLUDE_DIRS
+unset LIBRARY_DIRS
+
+cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 
 
 # Do we need this ?
