@@ -104,8 +104,8 @@ function cleaning_a_bit {
 
 ###
 # Function that gets a file from an URL and uncompress it
-# $1 = the URL where to get the file
-# $2 = the file itself
+# $1 the URL where to get the file
+# $2 the file itself
 # $3 args to the tar command
 #
 function get_and_uncompress {
@@ -128,6 +128,30 @@ function kill_everything {
 
 
 ###
+# Function to uncompress, configure, make and install a program from source
+# $1 the URL where to get the file
+# $2 the file itself
+# $3 args to the tar command
+# $4 the directory where the source is
+# $5 configure options
+#
+function get_configure_make_install {
+
+    get_and_uncompress $1 $2 $3
+
+    # Compiling python itself. Need the rights to write into $CONF_PREFIX directory
+    cd $4
+    ./configure $5
+    make $MAKE_ARGS
+    make install
+
+    # Cleaning a bit
+    cleaning_a_bit $2 $4$
+}
+
+
+
+###
 # Main script is begining here.
 #
 
@@ -140,18 +164,10 @@ mkdir -p $TMPDIR
 
 
 ###
-# Downloading and uncompressing python itself
+# Downloading, uncompressing, configuring, making and installing python itself
 #
-get_and_uncompress $PYTHON_URL $PYTHON_FILE zxvf
+get_configure_make_install $PYTHON_URL $PYTHON_FILE zxvf $PYTHON_DIR "--prefix=$CONF_PREFIX --enable-shared --enable-ipv6 --enable-unicode"
 
-# Compiling python itself. Need the rights to write into $CONF_PREFIX directory
-cd PYTHON_DIR
-./configure --prefix=$CONF_PREFIX --enable-shared --enable-ipv6 --enable-unicode
-make $MAKE_ARGS
-make install
-
-# Cleaning a bit
-cleaning_a_bit $PYTHON_FILE $PYTHON_DIR
 
 # Exporting paths of the newly installed python (in order to avoid using an
 # another installation and avoid to use $CONF_PREFIX/python everywhere)
@@ -221,13 +237,7 @@ cleaning_a_bit $WXPYTHON_FILE $WXPYTHON_DIR
 ###
 # Installing hdf5 library
 #
-get_and_uncompress $HDF5_URL $HDF5_FILE zxvf
-cd $HDF5_DIR
-./configure --prefix=$CONF_PREFIX
-make $MAKE_ARGS
-make install
-
-cleaning_a_bit $HDF5_DIR $HDF5_FILE
+get_configure_make_install $HDF5_URL $HDF5_FILE zxvf $HDF5_DIR "--prefix=$CONF_PREFIX"
 
 # Variable that may be used to know where hdf5 has been installed
 export HDF5_DIR=$CONF_PREFIX
@@ -267,13 +277,7 @@ cleaning_a_bit $BASEMAP_DIR
 ###
 # Installing SZIP (required for hdf4 which is required for pyhdf)
 #
-get_and_uncompress $SZIP_URL $SZIP_FILE zxvf
-cd $SZIP_DIR
-./configure --prefix=$CONF_PREFIX
-make $MAKE_ARGS
-make install
-
-cleaning_a_bit $SZIP_DIR
+get_configure_make_install $SZIP_URL $SZIP_FILE zxvf $SZIP_DIR "--prefix=$CONF_PREFIX"
 
 
 # Do we need this ?
