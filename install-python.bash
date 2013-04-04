@@ -82,6 +82,11 @@ export SZIP_URL="http://www.hdfgroup.org/ftp/lib-external/szip/2.1/src/szip-2.1.
 export SZIP_FILE="szip-2.1.tar.gz"
 export SZIP_DIR="szip-2.1"
 
+# HDF4
+export HDF4_URL="http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.9.tar.gz"
+export HDF4_FILE="hdf-4.2.9.tar.gz"
+export HDF4_DIR="hdf-4.2.9"
+
 
 # Some arguments to make : be silent and use 8 threads
 export MAKE_ARGS="-s -j 8"
@@ -278,6 +283,12 @@ cleaning_a_bit $BASEMAP_DIR
 # Installing SZIP (required for hdf4 which is required for pyhdf)
 #
 get_configure_make_install $SZIP_URL $SZIP_FILE zxvf $SZIP_DIR "--prefix=$CONF_PREFIX"
+
+
+###
+# Installing hdf4 with SZIP
+#
+get_configure_make_install $HDF4_URL $HDF4_FILE zxvf $HDF4_DIR "--prefix=$CONF_PREFIX --enable-shared --disable-fortran --with-szlib=$CONF_PREFIX"
 
 
 # Do we need this ?
