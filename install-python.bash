@@ -296,7 +296,7 @@ get_configure_make_install $SZIP_URL $SZIP_FILE zxvf $SZIP_DIR "--prefix=$CONF_P
 get_configure_make_install $HDF4_URL $HDF4_FILE zxvf $HDF4_DIR "--prefix=$CONF_PREFIX --enable-shared --disable-fortran --with-szlib=$CONF_PREFIX"
 
 ###
-# Installing pyhdf
+# Installing pyhdf knowing that we have SZIP and hdf4 in $CONF_PREFIX
 #
 get_and_uncompress $PYHDF_URL $PYHDF_FILE zxvf
 cd $PYHDF_DIR
