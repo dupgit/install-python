@@ -43,7 +43,7 @@ export CONF_PREFIX="/usr/local/python/2.7.3"
 
 # URL and file to be downloaded and the directory created when untaring the downloaded file :
 export PYTHON_FILE="Python-2.7.3.tgz"
-export PYTHON_URL="http://www.python.org/ftp/python/2.7.3/$PYTHON_FILE"
+export PYTHON_URL="http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tgz"
 export PYTHON_DIR="Python-2.7.3"
 
 # setuptools :
@@ -160,7 +160,6 @@ function get_configure_make_install {
 }
 
 
-
 ###
 # Main script is begining here.
 #
@@ -176,7 +175,8 @@ mkdir -p $TMPDIR
 ###
 # Downloading, uncompressing, configuring, making and installing python itself
 #
-get_configure_make_install $PYTHON_URL $PYTHON_FILE zxvf $PYTHON_DIR "--prefix=$CONF_PREFIX --enable-shared --enable-ipv6 --enable-unicode"
+mkdir -p $CONF_PREFIX/lib
+get_configure_make_install $PYTHON_URL $PYTHON_FILE zxvf $PYTHON_DIR "--prefix=$CONF_PREFIX --enable-shared --enable-ipv6 --enable-unicode LDFLAGS=\"-Wl,-rpath $CONF_PREFIX/lib\""
 
 
 # Exporting paths of the newly installed python (in order to avoid using an

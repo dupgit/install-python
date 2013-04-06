@@ -19,13 +19,13 @@ script as an alpha version !
 Requirements
 ============
 
-Before launching the script, make sure that you have the followinf installed :
+Before launching the script, make sure that you have the following installed :
 
 * bash
 * make
 * gcc
 * wget
 * tar
-* cmake to compile Pyside for instance
+* cmake to compile PySide for instance
 * blas-devel and lapack-devel to compile scipy for instance
 * graphviz
