@@ -1,4 +1,3 @@
-pygal
 Cython
 distribute
 docutils
@@ -69,3 +68,4 @@ pyparsing==1.5.7
 pydot
 pycurl
 freetype-py
+pygal
