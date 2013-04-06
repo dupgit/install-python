@@ -3,6 +3,7 @@ distribute
 docutils
 ipython
 appinst
+numpy
 biopython
 bitarray
 blist
@@ -26,7 +27,6 @@ keyring
 lxml
 matplotlib
 traits
-numpy
 configobj
 envisage
 MDP
