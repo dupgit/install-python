@@ -39,6 +39,9 @@ export TMPDIR="/tmp/install-python"
 # Path where to install python. Make sure that you have write access here.
 export CONF_PREFIX="/usr/local/python/2.7.3"
 
+# FILE where we want to log things.
+export LOG_FILE="$TMPDIR/install-python.log"
+
 ############### There should be no need to change anything below ###############
 
 # URL and file to be downloaded and the directory created when untaring the downloaded file :
@@ -147,16 +150,19 @@ function kill_everything {
 #
 function get_configure_make_install {
 
-    get_and_uncompress $1 $2 $3
+
+    echo $(date) " -> Installing  $2 :"  | tee -a $LOG_FILE
+
+    get_and_uncompress $1 $2 $3 >> $LOG_FILE
 
     # Compiling python itself. Need the rights to write into $CONF_PREFIX directory
     cd $4
-    ./configure $5
-    make $MAKE_ARGS
-    make install
+    ./configure $5 >> $LOG_FILE
+    make $MAKE_ARGS >> $LOG_FILE
+    make install >> $LOG_FILE
 
     # Cleaning a bit
-    cleaning_a_bit $2 $4$
+    cleaning_a_bit $2 $4$ >> $LOG_FILE
 }
 
 
@@ -168,8 +174,10 @@ function get_configure_make_install {
 trap kill_everything
 
 
-# Making the temporary directory and going into it to do the stuff
+# Making the temporary directory and zeroing the logfile
 mkdir -p $TMPDIR
+rm -f $LOG_FILE
+touch $LOG_FILE
 
 
 ###
@@ -192,7 +200,7 @@ get_and_uncompress $SETUP_TOOLS_URL $SETUP_TOOLS_FILE zxvf
 
 # installing setuptools
 cd $SETUP_TOOLS_DIR
-python setup.py install
+python setup.py install >> $LOG_FILE
 
 # Cleaning a bit
 cleaning_a_bit $SETUP_TOOLS_DIR $SETUP_TOOLS_FILE
@@ -208,23 +216,25 @@ easy_install pip
 # Installing packages that do not need anything else than themselves with pip !
 #
 for package in $(cat indep_package_list); do
-    pip install $package;
+    echo $(date) " -> Installing $package" | tee -a $LOG_FILE
+    pip install $package; >> $LOG_FILE
 done
 
 
 ##
 # Installing vtk
 #
-get_and_uncompress $VTK_URL $VTK_FILE zxvf
+echo $(date) " -> Installing vtk" | tee -a $LOG_FILE
+get_and_uncompress $VTK_URL $VTK_FILE zxvf >> $LOG_FILE
 
 # Compiling and installing to the right directory
 export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
 cd $VTK_DIR
 mkdir build
 cd build
-ccmake ../VTK
-cmake $MAKE_ARGS
-cmake install
+ccmake ../VTK >> $LOG_FILE
+cmake $MAKE_ARGS >> $LOG_FILE
+cmake install >> $LOG_FILE
 
 export CPATH=$CONF_PREFIX/include
 export LD_LIBRARY_PATH=$CONF_PREFIX/lib:${LD_LIBRARY_PATH}
@@ -236,10 +246,11 @@ cleaning_a_bit $VTK_FILE $VTK_DIR
 ###
 # Installing wxpython
 #
-get_and_uncompress $WXPYTHON_URL $WXPYTHON_FILE jxvf
+echo $(date) " -> Installing wxpython" | tee -a $LOG_FILE
+get_and_uncompress $WXPYTHON_URL $WXPYTHON_FILE jxvf >> $LOG_FILE
 
 cd $WXPYTHON_DIR/wxPython
-python build-wxpython.py --build_dir=../bld
+python build-wxpython.py --build_dir=../bld >> $LOG_FILE
 
 cleaning_a_bit $WXPYTHON_FILE $WXPYTHON_DIR
 
@@ -256,13 +267,14 @@ export HDF5_DIR=$CONF_PREFIX
 ###
 # Installing h5py by hand because the hdf5 library is in a specific directory
 #
+echo $(date) " -> Installing h5py" | tee -a $LOG_FILE
 cd $TMPDIR
-git clone $H5PY_URL
+git clone $H5PY_URL >> $LOG_FILE
 cd h5py/h5py
-python api_gen.py
+python api_gen.py >> $LOG_FILE
 cd ..
-python setup.py build --hdf5=$CONF_PREFIX
-python setup.py install
+python setup.py build --hdf5=$CONF_PREFIX >> $LOG_FILE
+python setup.py install >> $LOG_FILE
 
 cleaning_a_bit h5py
 
@@ -271,15 +283,16 @@ cleaning_a_bit h5py
 # Installing basemap by hand (it does not work with pip nor easy_install)
 # Requires matplotlib, numpy, GEOS, PIL
 #
-get_and_uncompress $BASEMAP_URL $BASEMAP_FILE zxvf
+echo $(date) " -> Installing basemap" | tee -a $LOG_FILE
+get_and_uncompress $BASEMAP_URL $BASEMAP_FILE zxvf >> $LOG_FILE
 cd $BASEMAP_DIR
 cd geos-3.3.3
 export GEOS_DIR=$CONF_PREFIX
-./configure --prefix=$GEOS_DIR
-make $MAKE_ARGS
-make install
+./configure --prefix=$GEOS_DIR >> $LOG_FILE
+make $MAKE_ARGS >> $LOG_FILE
+make install >> $LOG_FILE
 cd ..
-python setup.py install
+python setup.py install >> $LOG_FILE
 
 cleaning_a_bit $BASEMAP_DIR $BASEMAP_FILE
 
@@ -298,11 +311,12 @@ get_configure_make_install $HDF4_URL $HDF4_FILE zxvf $HDF4_DIR "--prefix=$CONF_P
 ###
 # Installing pyhdf knowing that we have SZIP and hdf4 in $CONF_PREFIX
 #
-get_and_uncompress $PYHDF_URL $PYHDF_FILE zxvf
+echo $(date) " -> Installing pydhf" | tee -a $LOG_FILE
+get_and_uncompress $PYHDF_URL $PYHDF_FILE zxvf >> $LOG_FILE
 cd $PYHDF_DIR
 export INCLUDE_DIRS=$CONF_PREFIX/include
 export LIBRARY_DIRS=$CONF_PREFIX/lib
-python setup.py install
+python setup.py install >> $LOG_FILE
 unset INCLUDE_DIRS
 unset LIBRARY_DIRS
 
@@ -316,6 +330,7 @@ cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 
 # installing the packages that need vtk, hdf5, h5py and so on
 for package in ets etsproxy ; do
-    pip install $package;
+    echo $(date) " -> Installing $package" | tee -a $LOG_FILE
+    pip install $package; >> $LOG_FILE
 done
 
