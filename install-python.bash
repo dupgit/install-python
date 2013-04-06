@@ -227,7 +227,7 @@ easy_install pip
 cd $TMPDIR
 for package in $(cat indep_package_list); do
     echo $(date) " -> Installing $package" | tee -a $LOG_FILE 2>&1
-    pip install $package; >> $LOG_FILE 2>&1
+    pip install -q $package; >> $LOG_FILE 2>&1
 done
 
 
