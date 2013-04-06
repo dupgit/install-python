@@ -155,7 +155,6 @@ function get_configure_make_install {
 
     get_and_uncompress $1 $2 $3 >> $LOG_FILE 2>&1
 
-    # Compiling python itself. Need the rights to write into $CONF_PREFIX directory
     cd $4
     ./configure $5 >> $LOG_FILE 2>&1
     make $MAKE_ARGS >> $LOG_FILE 2>&1
@@ -186,10 +185,12 @@ cp indep_package_list $TMPDIR/
 
 ###
 # Downloading, uncompressing, configuring, making and installing python itself
+# Need the rights to write into $CONF_PREFIX directory
 #
 mkdir -p $CONF_PREFIX/lib
-get_configure_make_install $PYTHON_URL $PYTHON_FILE zxf $PYTHON_DIR "--prefix=$CONF_PREFIX --enable-shared --enable-ipv6 --enable-unicode LDFLAGS=\"-Wl,-rpath $CONF_PREFIX/lib\""
-
+export LDFLAGS="-Wl,-rpath $CONF_PREFIX/lib"
+get_configure_make_install $PYTHON_URL $PYTHON_FILE zxf $PYTHON_DIR "--prefix=$CONF_PREFIX --enable-shared --enable-ipv6 --enable-unicode"
+unset LDFLAGS
 
 # Exporting paths of the newly installed python (in order to avoid using an
 # another installation and avoid to use $CONF_PREFIX/python everywhere)
