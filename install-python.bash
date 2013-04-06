@@ -162,7 +162,7 @@ function get_configure_make_install {
     make install >> $LOG_FILE 2>&1
 
     # Cleaning a bit
-    cleaning_a_bit $2 $4$ >> $LOG_FILE 2>&1
+    cleaning_a_bit $2 $4 >> $LOG_FILE 2>&1
 }
 
 
@@ -178,6 +178,10 @@ trap kill_everything
 mkdir -p $TMPDIR
 rm -f $LOG_FILE 2>&1
 touch $LOG_FILE 2>&1
+
+
+# Copying the file needed for the script :
+cp indep_package_list $TMPDIR/
 
 
 ###
@@ -216,6 +220,7 @@ easy_install pip
 ###
 # Installing packages that do not need anything else than themselves with pip !
 #
+cd $TMPDIR
 for package in $(cat indep_package_list); do
     echo $(date) " -> Installing $package" | tee -a $LOG_FILE 2>&1
     pip install $package; >> $LOG_FILE 2>&1
