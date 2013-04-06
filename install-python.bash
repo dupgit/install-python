@@ -171,7 +171,7 @@ function get_configure_make_install {
 #
 
 # Adding a trap if we want to kill everything
-trap kill_everything
+trap kill_everything EXIT;
 
 
 # Making the temporary directory and zeroing the logfile
