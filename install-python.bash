@@ -176,8 +176,8 @@ trap kill_everything
 
 # Making the temporary directory and zeroing the logfile
 mkdir -p $TMPDIR
-rm -f $LOG_FILE 2>&1
-touch $LOG_FILE 2>&1
+rm -f $LOG_FILE
+touch $LOG_FILE
 
 
 # Copying the file needed for the script :
