@@ -124,7 +124,7 @@ function cleaning_a_bit {
 function get_and_uncompress {
 
     cd $TMPDIR
-    wget -q -c $1
+    wget -qc $1
     tar $3 $2
 
 }
@@ -151,7 +151,7 @@ function kill_everything {
 function get_configure_make_install {
 
 
-    echo $(date) " -> Installing  $2 :"  | tee -a $LOG_FILE 2>&1
+    echo $(date) " -> Installing  $2"  | tee -a $LOG_FILE 2>&1
 
     get_and_uncompress $1 $2 $3 >> $LOG_FILE 2>&1
 
