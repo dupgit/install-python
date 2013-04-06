@@ -226,6 +226,7 @@ easy_install pip
 # Installing packages that do not need anything else than themselves with pip !
 #
 cd $TMPDIR
+echo $(date) " -> Installing " $(wc -l indep_package_list) " packages :" | tee -a $LOG_FILE
 for package in $(cat indep_package_list); do
     echo $(date) " -> Installing $package" | tee -a $LOG_FILE 2>&1
     pip install -q $package; >> $LOG_FILE 2>&1
