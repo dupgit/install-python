@@ -204,7 +204,7 @@ export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
 ###
 # Getting setuptools and distutils to enable easy_install
 #
-echo $(date) " -> Installing setuptools" | tee -a >> $LOG_FILE
+echo $(date) " -> Installing setuptools" | tee -a $LOG_FILE
 get_and_uncompress $SETUP_TOOLS_URL $SETUP_TOOLS_FILE zxf  >> $LOG_FILE 2>&1
 
 # installing setuptools
@@ -218,6 +218,7 @@ cleaning_a_bit $SETUP_TOOLS_DIR $SETUP_TOOLS_FILE
 ###
 # Installing pip with easy_install. We will use pip to install the other packages
 #
+echo $(date) " -> Installing pip" | tee -a $LOG_FILE
 easy_install pip
 
 
