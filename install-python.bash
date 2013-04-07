@@ -341,7 +341,7 @@ cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 #echo "install_scripts = $CONF_PREFIX/bin" >> $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
 
 # installing the packages that need vtk, hdf5, h5py and so on
-for package in ets etsproxy ; do
+for package in ets etsproxy PySide; do
     echo $(date) " -> Installing $package" | tee -a $LOG_FILE 2>&1
     pip install $package; >> $LOG_FILE 2>&1
 done
