@@ -244,7 +244,7 @@ export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
 cd $VTK_DIR
 mkdir build
 cd build
-ccmake ../VTK >> $LOG_FILE 2>&1
+#ccmake ../VTK >> $LOG_FILE 2>&1
 cmake $MAKE_ARGS >> $LOG_FILE 2>&1
 cmake install >> $LOG_FILE 2>&1
 
