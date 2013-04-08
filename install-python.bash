@@ -95,6 +95,11 @@ export PYHDF_URL="http://sourceforge.net/projects/pysclint/files/pyhdf/0.8.3/pyh
 export PYHDF_FILE="pyhdf-0.8.3.tar.gz"
 export PYHDF_DIR="pyhdf-0.8.3"
 
+# Cmake
+export CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-2.8.10.2.tar.gz"
+export CMAKE_FILE="cmake-2.8.10.2.tar.gz"
+export CMAKE_DIR="cmake-2.8.10.2"
+
 
 # Some arguments to make : be silent and use 8 threads
 export MAKE_ARGS="-s -j 8"
@@ -164,6 +169,20 @@ function get_configure_make_install {
     cleaning_a_bit $2 $4 >> $LOG_FILE 2>&1
 }
 
+###
+# Function to add the install dir to the cmakecache.txt file
+# We assume that we are in the directory contaning CMakeCache.txt file
+#
+function configure_cmake_cache {
+
+    grep -v CMAKE_INSTALL_PREFIX CMakeCache.txt >> CMakeCache2.txt
+    echo "" >> CMakeCache2.txt
+    echo "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" >> CMakeCache2.txt
+    rm CMakeCache.txt
+    mv CMakeCache2.txt CMakeCache.txt
+
+}
+
 
 ###
 # Main script is begining here.
@@ -182,6 +201,20 @@ touch $LOG_FILE
 # Copying the file needed for the script :
 cp indep_package_list $TMPDIR/
 
+
+###
+# Cmake installation
+#
+echo $(date) " -> Installing Cmake" | tee -a $LOG_FILE
+get_and_uncompress $CMAKE_URL $CMAKE_FILE zxf  >> $LOG_FILE 2>&1
+mkdir -p $CMAKE_DIR/build
+cd $CMAKE_DIR/build
+../configure  >> $LOG_FILE 2>&1
+configure_cmake_cache            # Putting $CONF_PREFIX as the install directory
+gmake $MAKE_ARGS >> $LOG_FILE 2>&1
+gmake install >> $LOG_FILE 2>&1
+
+cleaning_a_bit $CMAKE_FILE $CMAKE_DIR
 
 ###
 # Downloading, uncompressing, configuring, making and installing python itself
@@ -241,10 +274,9 @@ get_and_uncompress $VTK_URL $VTK_FILE zxf >> $LOG_FILE 2>&1
 
 # Compiling and installing to the right directory
 export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
-cd $VTK_DIR
-mkdir build
-cd build
-#ccmake ../VTK >> $LOG_FILE 2>&1
+mkdir -p $VTK_DIR/build
+cd $VTK_DIR/build
+configure_cmake_cache
 cmake $MAKE_ARGS >> $LOG_FILE 2>&1
 cmake install >> $LOG_FILE 2>&1
 
