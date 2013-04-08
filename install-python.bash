@@ -156,7 +156,7 @@ function kill_everything {
 function get_configure_make_install {
 
 
-    echo $(date) " -> Installing  $2"  | tee -a $LOG_FILE 2>&1
+    echo $(date) " -> Installing $2"  | tee -a $LOG_FILE 2>&1
 
     get_and_uncompress $1 $2 $3 >> $LOG_FILE 2>&1
 
