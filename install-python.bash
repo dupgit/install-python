@@ -188,7 +188,7 @@ function configure_cmake_cache {
 # Main script is begining here.
 #
 
-# Adding a trap if we want to kill everything
+# Adding a trap if we want to kill everything upon exit
 trap kill_everything EXIT;
 
 
@@ -276,7 +276,7 @@ get_and_uncompress $VTK_URL $VTK_FILE zxf >> $LOG_FILE 2>&1
 export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
 mkdir -p $VTK_DIR/build
 cd $VTK_DIR/build
-configure_cmake_cache
+configure_cmake_cache                # To configure the install directory
 cmake $MAKE_ARGS >> $LOG_FILE 2>&1
 cmake install >> $LOG_FILE 2>&1
 
