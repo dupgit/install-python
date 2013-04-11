@@ -31,7 +31,7 @@ Before launching the script, make sure that you have the following installed :
 
 * bash
 * GNU coreutils (I do not know if busybox works)
-* make
+* make and gmake
 * gcc
 * wget
 * tar

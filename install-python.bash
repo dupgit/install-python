@@ -22,7 +22,7 @@
 
 #
 # Please make sure you have installed the following in your system :
-# cmake, blas-devel, lapack-devel
+# gmake, blas-devel, lapack-devel
 #
 
 #
@@ -60,7 +60,7 @@ export VTK_URL="http://www.vtk.org/files/release/5.10/vtk-5.10.1.tar.gz"
 export VTK_DIR="VTK5.10.1"
 export VTK_DATA_FILE="vtkdata-5.10.1.tar.gz"
 export VTK_DATA_URL="http://www.vtk.org/files/release/5.10/vtkdata-5.10.1.tar.gz"
-export VTK_DATA_DIR="vtkdata-5.10.1"
+export VTK_DATA_DIR="VTKData5.10.1"
 
 # wxpython :
 export WXPYTHON_URL=" http://downloads.sourceforge.net/wxpython/wxPython-src-2.9.4.0.tar.bz2"
@@ -271,20 +271,26 @@ done
 #
 echo $(date) " -> Installing vtk" | tee -a $LOG_FILE 2>&1
 get_and_uncompress $VTK_URL $VTK_FILE zxf >> $LOG_FILE 2>&1
+get_and_uncompress $VTK_DATA_URL $VTK_DATA_FILE zxf >> $LOG_FILE 2>&1
+mv $VTK_DATA_DIR $CONF_PREFIX/share/  # Putting vtk data in $CONF_PREFIX/share/
 
 # Compiling and installing to the right directory
 export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
-mkdir -p $VTK_DIR/build
-cd $VTK_DIR/build
-configure_cmake_cache                # To configure the install directory
-cmake $MAKE_ARGS >> $LOG_FILE 2>&1
-cmake install >> $LOG_FILE 2>&1
+export VTK_DATA_ROOT="$CONF_PREFIX/share/$VTK_DATA_DIR"
+export BUILD_SHARED_LIBS=true
+export BUILD_EXAMPLES=true
+mkdir -p build
+cd build
+cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "VTK_DATA_ROOT:PATH=$CONF_PREFIX/share/$VTK_DATA_DIR" -D "BUILD_SHARED_LIBS=true" -D "BUILD_EXAMPLES:BOOL=true" ../$VTK_DIR
+gmake $MAKE_ARGS >> $LOG_FILE 2>&1
+gmake install >> $LOG_FILE 2>&1
 
 export CPATH=$CONF_PREFIX/include
 export LD_LIBRARY_PATH=$CONF_PREFIX/lib:${LD_LIBRARY_PATH}
 
 # Cleaning a bit
-cleaning_a_bit $VTK_FILE $VTK_DIR
+cleaning_a_bit $VTK_FILE $VTK_DIR build
+unset VTK_DATA_ROOT
 
 
 ###
