@@ -285,8 +285,9 @@ cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "VTK_DATA_ROOT:PATH=$CONF_P
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
-export CPATH=$CONF_PREFIX/include
-export LD_LIBRARY_PATH=$CONF_PREFIX/lib:${LD_LIBRARY_PATH}
+# Those variables have allready been sat (see at top of the script)
+#export CPATH=$CONF_PREFIX/include
+#export LD_LIBRARY_PATH=$CONF_PREFIX/lib:${LD_LIBRARY_PATH}
 
 # Cleaning a bit
 cleaning_a_bit $VTK_FILE $VTK_DIR build
@@ -315,7 +316,7 @@ export HDF5_DIR=$CONF_PREFIX
 
 
 ###
-# Installing h5py by hand because the hdf5 library is in a specific directory
+# Installing h5py by hand because the hdf5 library is in a specific directory (not in the system's)
 #
 echo $(date) " -> Installing h5py" | tee -a $LOG_FILE 2>&1
 cd $TMPDIR
