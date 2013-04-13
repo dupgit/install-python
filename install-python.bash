@@ -42,6 +42,10 @@ export CONF_PREFIX="/usr/local/python/2.7.3"
 # FILE where we want to log things.
 export LOG_FILE="$TMPDIR/install-python.log"
 
+# Some arguments to make : be silent and use 8 threads
+export MAKE_ARGS="-s -j 8"
+
+
 ############### There should be no need to change anything below ###############
 
 # URL and file to be downloaded and the directory created when untaring the downloaded file :
@@ -105,8 +109,11 @@ export LAPACK_URL="http://www.netlib.org/lapack/lapack-3.4.2.tgz"
 export LAPACK_FILE="lapack-3.4.2.tgz"
 export LAPACK_DIR="lapack-3.4.2"
 
-# Some arguments to make : be silent and use 8 threads
-export MAKE_ARGS="-s -j 8"
+# QT
+export QT_URL="http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.4.tar.gz"
+export QT_FILE="qt-everywhere-opensource-src-4.8.4.tar.gz"
+export QT_DIR="qt-everywhere-opensource-src-4.8.4"
+
 
 ###
 # Begining of the script itself : function definitions
@@ -187,6 +194,8 @@ function configure_cmake_cache {
 
 }
 
+############################### End of functions ###############################
+
 
 ###
 # Main script is begining here.
@@ -250,7 +259,22 @@ export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
 cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "BUILD_SHARED_LIBS=true" ../$LAPACK_DIR >> $LOG_FILE 2>&1
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
+
 cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
+
+
+###
+# Qt
+#
+echo $(date) " -> Installing Qt" | tee -a $LOG_FILE
+get_and_uncompress $QT_URL $QT_FILE zxf  >> $LOG_FILE 2>&1
+cd $QT_DIR
+sed -i -e s/read\ acceptance/acceptance=yes/ configure
+./configure -prefix=/usr/local/python/2.7.3 -opensource -shared -static -silent -optimized-qmake >> $LOG_FILE 2>&1
+gmake $MAKE_ARGS >> $LOG_FILE 2>&1
+gmake install >> $LOG_FILE 2>&1
+
+cleaning_a_bit $QT_FILE $QT_DIR build
 
 
 ###
