@@ -69,3 +69,6 @@ pydot
 pycurl
 freetype-py
 pygal
+gmpy
+scipy
+pyqtgraph
