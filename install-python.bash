@@ -34,7 +34,7 @@ export http_proxy=""
 export https_proxy=""
 
 # Temporary directory where we will run the script.
-export TMPDIR="/tmp/install-python"
+export TMPDIR="/dev/shm/install-python"
 
 # Path where to install python. Make sure that you have write access here.
 export CONF_PREFIX="/usr/local/python/2.7.3"
@@ -100,6 +100,10 @@ export CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-2.8.10.2.tar.gz"
 export CMAKE_FILE="cmake-2.8.10.2.tar.gz"
 export CMAKE_DIR="cmake-2.8.10.2"
 
+# Lapack
+export LAPACK_URL="http://www.netlib.org/lapack/lapack-3.4.2.tgz"
+export LAPACK_FILE="lapack-3.4.2.tgz"
+export LAPACK_DIR="lapack-3.4.2"
 
 # Some arguments to make : be silent and use 8 threads
 export MAKE_ARGS="-s -j 8"
@@ -216,6 +220,7 @@ gmake install >> $LOG_FILE 2>&1
 
 cleaning_a_bit $CMAKE_FILE $CMAKE_DIR
 
+
 ###
 # Downloading, uncompressing, configuring, making and installing python itself
 # Need the rights to write into $CONF_PREFIX directory
@@ -232,6 +237,20 @@ export PYTHONPATH=$CONF_PREFIX
 export PATH=$PYTHONPATH/bin:$PATH
 export CPATH=$PYTHONPATH/include
 export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
+
+
+###
+# Lapack and blas installation
+#
+echo $(date) " -> Installing Lapack and Blas" | tee -a $LOG_FILE
+get_and_uncompress $LAPACK_URL $LAPACK_FILE zxf  >> $LOG_FILE 2>&1
+mkdir -p build
+cd build
+export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
+cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "BUILD_SHARED_LIBS=true" ../$LAPACK_DIR >> $LOG_FILE 2>&1
+gmake $MAKE_ARGS >> $LOG_FILE 2>&1
+gmake install >> $LOG_FILE 2>&1
+cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
 
 
 ###
@@ -281,7 +300,7 @@ export BUILD_SHARED_LIBS=true
 export BUILD_EXAMPLES=true
 mkdir -p build
 cd build
-cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "VTK_DATA_ROOT:PATH=$CONF_PREFIX/share/$VTK_DATA_DIR" -D "BUILD_SHARED_LIBS=true" -D "BUILD_EXAMPLES:BOOL=true" ../$VTK_DIR
+cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "VTK_DATA_ROOT:PATH=$CONF_PREFIX/share/$VTK_DATA_DIR" -D "BUILD_SHARED_LIBS=true" -D "BUILD_EXAMPLES:BOOL=true" ../$VTK_DIR >> $LOG_FILE 2>&1
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
