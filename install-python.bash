@@ -270,7 +270,7 @@ echo $(date) " -> Installing Qt" | tee -a $LOG_FILE
 get_and_uncompress $QT_URL $QT_FILE zxf  >> $LOG_FILE 2>&1
 cd $QT_DIR
 sed -i -e s/read\ acceptance/acceptance=yes/ configure
-./configure -prefix=/usr/local/python/2.7.3 -opensource -shared -static -silent -optimized-qmake >> $LOG_FILE 2>&1
+./configure -prefix=$CONF_PREFIX -opensource -shared -static -silent -optimized-qmake >> $LOG_FILE 2>&1
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
