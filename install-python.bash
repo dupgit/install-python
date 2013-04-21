@@ -181,7 +181,7 @@ function get_configure_make_install {
 }
 
 ###
-# Function to add the install dir to the cmakecache.txt file
+# Function to add the install dir to the CmakeCache.txt file
 # We assume that we are in the directory contaning CMakeCache.txt file
 #
 function configure_cmake_cache {
@@ -270,7 +270,7 @@ echo $(date) " -> Installing Qt" | tee -a $LOG_FILE
 get_and_uncompress $QT_URL $QT_FILE zxf  >> $LOG_FILE 2>&1
 cd $QT_DIR
 sed -i -e s/read\ acceptance/acceptance=yes/ configure
-./configure -prefix=$CONF_PREFIX -opensource -shared -static -silent -optimized-qmake -nomake examples >> $LOG_FILE 2>&1
+./configure -prefix=$CONF_PREFIX -opensource -shared -silent -optimized-qmake -nomake examples >> $LOG_FILE 2>&1
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
@@ -327,10 +327,6 @@ cd build
 cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "VTK_DATA_ROOT:PATH=$CONF_PREFIX/share/$VTK_DATA_DIR" -D "BUILD_SHARED_LIBS=true" -D "BUILD_EXAMPLES:BOOL=true" ../$VTK_DIR >> $LOG_FILE 2>&1
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
-
-# Those variables have allready been sat (see at top of the script)
-#export CPATH=$CONF_PREFIX/include
-#export LD_LIBRARY_PATH=$CONF_PREFIX/lib:${LD_LIBRARY_PATH}
 
 # Cleaning a bit
 cleaning_a_bit $VTK_FILE $VTK_DIR build
