@@ -270,7 +270,7 @@ echo $(date) " -> Installing Qt" | tee -a $LOG_FILE
 get_and_uncompress $QT_URL $QT_FILE zxf  >> $LOG_FILE 2>&1
 cd $QT_DIR
 sed -i -e s/read\ acceptance/acceptance=yes/ configure
-./configure -prefix=$CONF_PREFIX -opensource -shared -silent -optimized-qmake -nomake examples >> $LOG_FILE 2>&1
+./configure -prefix $CONF_PREFIX -opensource -shared -silent -optimized-qmake -nomake examples -nomake demos>> $LOG_FILE 2>&1
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
@@ -302,7 +302,7 @@ easy_install pip
 # Installing packages that do not need anything else than themselves with pip !
 #
 cd $TMPDIR
-echo $(date) " -> Installing "$(wc -l indep_package_list | cut -d' ' -f1) " packages :" | tee -a $LOG_FILE
+echo $(date) " -> Installing "$(wc -l indep_package_list | cut -d' ' -f1)" packages :" | tee -a $LOG_FILE
 for package in $(cat indep_package_list); do
     echo $(date) " -> Installing $package" | tee -a $LOG_FILE 2>&1
     pip install -q $package; >> $LOG_FILE 2>&1
