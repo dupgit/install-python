@@ -1,7 +1,7 @@
 #!/bin/env bash
 #
-#  install-python.bash is a script that may install python and a huge number
-#                      of usefull modules
+#  install-python.bash is a script that may install python and a huge
+#                      number of usefull modules
 #
 #  (C) Copyright 2013 Olivier Delhomme
 #  e-mail : olivier.delhomme@free.fr
@@ -102,6 +102,7 @@ export PYHDF_FILE="pyhdf-0.8.3.tar.gz"
 export PYHDF_DIR="pyhdf-0.8.3"
 
 # Cmake
+# TODO : try 2.8.11
 export CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-2.8.10.2.tar.gz"
 export CMAKE_FILE="cmake-2.8.10.2.tar.gz"
 export CMAKE_DIR="cmake-2.8.10.2"
@@ -168,7 +169,7 @@ function kill_everything {
 #
 function get_configure_make_install {
 
-    echo $(date) " -> Installing $2"  | tee -a $LOG_FILE 2>&1
+    pretty_print "$2"
 
     get_and_uncompress $1 $2 $3 >> $LOG_FILE 2>&1
 
@@ -196,6 +197,17 @@ function configure_cmake_cache {
 
 }
 
+
+###
+# Function to pretty print the date
+# $1 is the package name to be installed
+function pretty_print {
+
+    echo $(date) " -> Installing $1" | tee -a $LOG_FILE
+
+}
+
+
 ############################### End of functions ###############################
 
 
@@ -220,12 +232,12 @@ cp indep_package_list $TMPDIR/
 ###
 # Cmake installation
 #
-echo $(date) " -> Installing Cmake" | tee -a $LOG_FILE
+pretty_print "Cmake"
 get_and_uncompress $CMAKE_URL $CMAKE_FILE zxf  >> $LOG_FILE 2>&1
 mkdir -p $CMAKE_DIR/build
 cd $CMAKE_DIR/build
 ../configure  >> $LOG_FILE 2>&1
-configure_cmake_cache            # Putting $CONF_PREFIX as the install directory
+configure_cmake_cache               # Putting $CONF_PREFIX as the install directory
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
@@ -253,7 +265,7 @@ export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
 ###
 # Lapack and blas installation
 #
-echo $(date) " -> Installing Lapack and Blas" | tee -a $LOG_FILE
+pretty_print "Lapack and Blas"
 get_and_uncompress $LAPACK_URL $LAPACK_FILE zxf  >> $LOG_FILE 2>&1
 mkdir -p build
 cd build
@@ -268,7 +280,7 @@ cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
 ###
 # Qt
 #
-echo $(date) " -> Installing Qt" | tee -a $LOG_FILE
+pretty_print "Qt"
 get_and_uncompress $QT_URL $QT_FILE zxf  >> $LOG_FILE 2>&1
 cd $QT_DIR
 sed -i -e s/read\ acceptance/acceptance=yes/ configure
@@ -282,7 +294,7 @@ cleaning_a_bit $QT_FILE $QT_DIR build
 ###
 # Getting setuptools and distutils to enable easy_install
 #
-echo $(date) " -> Installing setuptools" | tee -a $LOG_FILE
+pretty_print "setuptools"
 get_and_uncompress $SETUP_TOOLS_URL $SETUP_TOOLS_FILE zxf  >> $LOG_FILE 2>&1
 
 # installing setuptools
@@ -296,7 +308,7 @@ cleaning_a_bit $SETUP_TOOLS_DIR $SETUP_TOOLS_FILE
 ###
 # Installing pip with easy_install. We will use pip to install the other packages
 #
-echo $(date) " -> Installing pip" | tee -a $LOG_FILE
+pretty_print "pip"
 easy_install pip
 
 
@@ -304,9 +316,9 @@ easy_install pip
 # Installing packages that do not need anything else than themselves with pip !
 #
 cd $TMPDIR
-echo $(date) " -> Installing "$(wc -l indep_package_list | cut -d' ' -f1)" packages :" | tee -a $LOG_FILE
+pretty_print ""$(wc -l indep_package_list | cut -d' ' -f1)" packages :"
 for package in $(cat indep_package_list); do
-    echo $(date) " -> Installing $package" | tee -a $LOG_FILE 2>&1
+    pretty_print "$package"
     pip install -q $package; >> $LOG_FILE 2>&1
 done
 
@@ -314,7 +326,7 @@ done
 ##
 # Installing vtk
 #
-echo $(date) " -> Installing vtk" | tee -a $LOG_FILE 2>&1
+pretty_print "vtk"
 get_and_uncompress $VTK_URL $VTK_FILE zxf >> $LOG_FILE 2>&1
 get_and_uncompress $VTK_DATA_URL $VTK_DATA_FILE zxf >> $LOG_FILE 2>&1
 mv $VTK_DATA_DIR $CONF_PREFIX/share/  # Putting vtk data in $CONF_PREFIX/share/
@@ -338,7 +350,7 @@ unset VTK_DATA_ROOT
 ###
 # Installing wxpython
 #
-echo $(date) " -> Installing wxpython" | tee -a $LOG_FILE 2>&1
+pretty_print "wxpython"
 get_and_uncompress $WXPYTHON_URL $WXPYTHON_FILE jxf >> $LOG_FILE 2>&1
 
 cd $WXPYTHON_DIR/wxPython
@@ -359,7 +371,7 @@ export HDF5_DIR=$CONF_PREFIX
 ###
 # Installing h5py by hand because the hdf5 library is in a specific directory (not in the system's)
 #
-echo $(date) " -> Installing h5py" | tee -a $LOG_FILE 2>&1
+pretty_print "h5py"
 cd $TMPDIR
 git clone $H5PY_URL >> $LOG_FILE 2>&1
 cd h5py/h5py
@@ -375,7 +387,7 @@ cleaning_a_bit h5py
 # Installing basemap by hand (it does not work with pip nor easy_install)
 # Requires matplotlib, numpy, GEOS, PIL
 #
-echo $(date) " -> Installing basemap" | tee -a $LOG_FILE 2>&1
+pretty_print "basemap"
 get_and_uncompress $BASEMAP_URL $BASEMAP_FILE zxf >> $LOG_FILE 2>&1
 cd $BASEMAP_DIR
 cd geos-3.3.3
@@ -403,7 +415,7 @@ get_configure_make_install $HDF4_URL $HDF4_FILE zxf $HDF4_DIR "--prefix=$CONF_PR
 ###
 # Installing pyhdf knowing that we have SZIP and hdf4 in $CONF_PREFIX
 #
-echo $(date) " -> Installing pydhf" | tee -a $LOG_FILE 2>&1
+pretty_print "pydhf"
 get_and_uncompress $PYHDF_URL $PYHDF_FILE zxf >> $LOG_FILE 2>&1
 cd $PYHDF_DIR
 export INCLUDE_DIRS=$CONF_PREFIX/include
@@ -422,7 +434,7 @@ cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 
 # installing the packages that need vtk, hdf5, h5py and so on
 for package in ets etsproxy PySide; do
-    echo $(date) " -> Installing $package" | tee -a $LOG_FILE 2>&1
+    pretty_print "$package"
     pip install $package; >> $LOG_FILE 2>&1
 done
 
