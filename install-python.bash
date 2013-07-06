@@ -36,8 +36,10 @@ export https_proxy=""
 # Temporary directory where we will run the script.
 export TMPDIR="/dev/shm/install-python"
 
+export PYTHON_VERSION="2.7.5"
+
 # Path where to install python. Make sure that you have write access here.
-export CONF_PREFIX="/usr/local/python/2.7.3"
+export CONF_PREFIX="/usr/local/python/$PYTHON_VERSION"
 
 # FILE where we want to log things.
 export LOG_FILE="$TMPDIR/install-python.log"
@@ -49,9 +51,9 @@ export MAKE_ARGS="-s -j 8"
 ############### There should be no need to change anything below ###############
 
 # URL and file to be downloaded and the directory created when untaring the downloaded file :
-export PYTHON_FILE="Python-2.7.3.tgz"
-export PYTHON_URL="http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tgz"
-export PYTHON_DIR="Python-2.7.3"
+export PYTHON_FILE="Python-2.7.5.tgz"
+export PYTHON_URL="http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz"
+export PYTHON_DIR="Python-2.7.5"
 
 # setuptools :
 export SETUP_TOOLS_FILE="setuptools-0.6c11.tar.gz"
@@ -166,7 +168,6 @@ function kill_everything {
 #
 function get_configure_make_install {
 
-
     echo $(date) " -> Installing $2"  | tee -a $LOG_FILE 2>&1
 
     get_and_uncompress $1 $2 $3 >> $LOG_FILE 2>&1
@@ -179,6 +180,7 @@ function get_configure_make_install {
     # Cleaning a bit
     cleaning_a_bit $2 $4 >> $LOG_FILE 2>&1
 }
+
 
 ###
 # Function to add the install dir to the CmakeCache.txt file
