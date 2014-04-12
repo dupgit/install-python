@@ -273,6 +273,7 @@ unset LDFLAGS
 # Exporting paths of the newly installed python (in order to avoid using an
 # another installation and avoid to use $CONF_PREFIX/python everywhere)
 export PYTHONPATH=$CONF_PREFIX
+export PYTHONHOME=$CONF_PREFIX
 export PATH=$PYTHONPATH/bin:$PATH
 export CPATH=$PYTHONPATH/include
 export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
