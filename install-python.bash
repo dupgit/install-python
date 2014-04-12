@@ -65,6 +65,7 @@ export SETUP_TOOLS_DIR="setuptools-3.4"
 export VTK_FILE="VTK-6.1.0.tar.gz"
 export VTK_URL="http://www.vtk.org/files/release/6.1/VTK-6.1.0.tar.gz"
 export VTK_DIR="VTK-6.1.0"
+
 export VTK_DATA_FILE="VTKData-6.1.0.tar.gz"
 export VTK_DATA_URL="http://www.vtk.org/files/release/6.1/VTKData-6.1.0.tar.gz"
 export VTK_DATA_DIR="VTKData6.1.0"
@@ -367,7 +368,7 @@ gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
 # Cleaning a bit
-cleaning_a_bit $VTK_FILE $VTK_DIR build
+cleaning_a_bit $VTK_FILE $VTK_DIR build $VTK_DATA_FILE
 unset VTK_DATA_ROOT
 
 
