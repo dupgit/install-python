@@ -128,6 +128,10 @@ export SWIG_URL="http://sourceforge.net/projects/swig/files/swig/swig-3.0.0/swig
 export SWIG_FILE="download"
 export SWIG_DIR="swig-3.0.0"
 
+# WxWIDGETS
+export WXWIDGETS_URL="https://sourceforge.net/projects/wxwindows/files/3.0.0/wxWidgets-3.0.0.tar.bz2"
+export WXWIDGETS_FILE="wxWidgets-3.0.0.tar.bz2"
+export WXWIDGET_DIR="wxWidgets-3.0.0"
 
 ###
 # Begining of the script itself : function definitions
@@ -370,6 +374,12 @@ gmake install >> $LOG_FILE 2>&1
 # Cleaning a bit
 cleaning_a_bit $VTK_FILE $VTK_DIR build $VTK_DATA_FILE
 unset VTK_DATA_ROOT
+
+
+###
+# Installing WxWidgets
+#
+get_configure_make_install $WXWIDGETS_URL $WXWIDGETS_FILE jxf $WXWIDGETS_DIR "--prefix=$CONF_PREFIX"
 
 
 ###
