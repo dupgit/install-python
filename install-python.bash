@@ -266,16 +266,16 @@ export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
 ###
 # Lapack and blas installation
 #
-#pretty_print "Lapack and Blas"
-#get_and_uncompress $LAPACK_URL $LAPACK_FILE zxf  >> $LOG_FILE 2>&1
-#mkdir -p build
-#cd build
-#export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
-#cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "BUILD_SHARED_LIBS=true" ../$LAPACK_DIR >> $LOG_FILE 2>&1
-#gmake $MAKE_ARGS >> $LOG_FILE 2>&1
-#gmake install >> $LOG_FILE 2>&1
+pretty_print "Lapack and Blas"
+get_and_uncompress $LAPACK_URL $LAPACK_FILE zxf  >> $LOG_FILE 2>&1
+mkdir -p build
+cd build
+export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
+cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "BUILD_SHARED_LIBS=true" ../$LAPACK_DIR >> $LOG_FILE 2>&1
+gmake $MAKE_ARGS >> $LOG_FILE 2>&1
+gmake install >> $LOG_FILE 2>&1
 
-#cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
+cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
 
 
 ###
@@ -331,6 +331,7 @@ pretty_print "vtk"
 get_and_uncompress $VTK_URL $VTK_FILE zxf >> $LOG_FILE 2>&1
 get_and_uncompress $VTK_DATA_URL $VTK_DATA_FILE zxf >> $LOG_FILE 2>&1
 mv $VTK_DATA_DIR $CONF_PREFIX/share/  # Putting vtk data in $CONF_PREFIX/share/
+
 
 # Compiling and installing to the right directory
 export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
