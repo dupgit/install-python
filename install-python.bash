@@ -52,7 +52,7 @@ export MAKE_ARGS="-s -j 8"
 
 # URL and file to be downloaded and the directory created when untaring the downloaded file :
 export PYTHON_FILE="Python-2.7.6.tgz"
-export PYTHON_URL="http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz "
+export PYTHON_URL="http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz"
 export PYTHON_DIR="Python-2.7.6"
 
 # setuptools :
@@ -158,7 +158,7 @@ function cleaning_a_bit {
 function get_and_uncompress {
 
     cd $TMPDIR
-    wget -qc $1
+    wget -qc --no-check-certificate $1
     tar $3 $2
 
 }
