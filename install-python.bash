@@ -36,7 +36,7 @@ export https_proxy=""
 # Temporary directory where we will run the script.
 export TMPDIR="/dev/shm/install-python"
 
-export PYTHON_VERSION="2.7.5"
+export PYTHON_VERSION="2.7.6"
 
 # Path where to install python. Make sure that you have write access here.
 export CONF_PREFIX="/usr/local/python/$PYTHON_VERSION"
@@ -51,22 +51,23 @@ export MAKE_ARGS="-s -j 8"
 ############### There should be no need to change anything below ###############
 
 # URL and file to be downloaded and the directory created when untaring the downloaded file :
-export PYTHON_FILE="Python-2.7.5.tgz"
-export PYTHON_URL="http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz"
-export PYTHON_DIR="Python-2.7.5"
+export PYTHON_FILE="Python-2.7.6.tgz"
+export PYTHON_URL="http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz "
+export PYTHON_DIR="Python-2.7.6"
 
 # setuptools :
-export SETUP_TOOLS_FILE="setuptools-0.6c11.tar.gz"
-export SETUP_TOOLS_URL="https://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz#md5=7df2a529a074f613b509fb44feefe74e"
-export SETUP_TOOLS_DIR="setuptools-0.6c11"
+# Try the new way to install setuptools : https://pypi.python.org/pypi/setuptools/0.8#id1
+export SETUP_TOOLS_FILE="setuptools-3.4.tar.gz"
+export SETUP_TOOLS_URL="https://pypi.python.org/packages/source/s/setuptools/setuptools-3.4.tar.gz"
+export SETUP_TOOLS_DIR="setuptools-3.4"
 
 # vtk :
-export VTK_FILE="vtk-5.10.1.tar.gz"
-export VTK_URL="http://www.vtk.org/files/release/5.10/vtk-5.10.1.tar.gz"
-export VTK_DIR="VTK5.10.1"
-export VTK_DATA_FILE="vtkdata-5.10.1.tar.gz"
-export VTK_DATA_URL="http://www.vtk.org/files/release/5.10/vtkdata-5.10.1.tar.gz"
-export VTK_DATA_DIR="VTKData5.10.1"
+export VTK_FILE="VTK-6.1.0.tar.gz"
+export VTK_URL="http://www.vtk.org/files/release/6.1/VTK-6.1.0.tar.gz"
+export VTK_DIR="VTK-6.1.0"
+export VTK_DATA_FILE="VTKData-6.1.0.tar.gz"
+export VTK_DATA_URL="http://www.vtk.org/files/release/6.1/VTKData-6.1.0.tar.gz"
+export VTK_DATA_DIR="VTKData6.1.0"
 
 # wxpython :
 export WXPYTHON_URL=" http://downloads.sourceforge.net/wxpython/wxPython-src-2.9.4.0.tar.bz2"
@@ -83,7 +84,7 @@ export H5PY_URL="https://github.com/h5py/h5py.git"
 
 # basemap 1.0.6 (does not work with pip nor easy_install) :
 export BASEMAP_URL="http://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.6/basemap-1.0.6.tar.gz/download"
-export BASEMAP_FILE="basemap-1.0.6.tar.gz"
+export BASEMAP_FILE="download"
 export BASEMAP_DIR="basemap-1.0.6"
 
 # SZIP needed for hdf4 which is needed for pyhdf
@@ -98,24 +99,23 @@ export HDF4_DIR="hdf-4.2.9"
 
 # pyhdf 0.8.3
 export PYHDF_URL="http://sourceforge.net/projects/pysclint/files/pyhdf/0.8.3/pyhdf-0.8.3.tar.gz/download"
-export PYHDF_FILE="pyhdf-0.8.3.tar.gz"
+export PYHDF_FILE="download"
 export PYHDF_DIR="pyhdf-0.8.3"
 
 # Cmake
-# TODO : try 2.8.11
-export CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-2.8.10.2.tar.gz"
-export CMAKE_FILE="cmake-2.8.10.2.tar.gz"
-export CMAKE_DIR="cmake-2.8.10.2"
+export CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-2.8.12.tar.gz"
+export CMAKE_FILE="cmake-2.8.12.tar.gz"
+export CMAKE_DIR="cmake-2.8.12"
 
 # Lapack
-export LAPACK_URL="http://www.netlib.org/lapack/lapack-3.4.2.tgz"
-export LAPACK_FILE="lapack-3.4.2.tgz"
-export LAPACK_DIR="lapack-3.4.2"
+export LAPACK_URL="http://www.netlib.org/lapack/lapack-3.5.0.tgz"
+export LAPACK_FILE="lapack-3.5.0.tgz"
+export LAPACK_DIR="lapack-3.5.0"
 
 # QT
-export QT_URL="http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.4.tar.gz"
-export QT_FILE="qt-everywhere-opensource-src-4.8.4.tar.gz"
-export QT_DIR="qt-everywhere-opensource-src-4.8.4"
+export QT_URL="http://download.qt-project.org/archive/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz"
+export QT_FILE="qt-everywhere-opensource-src-4.8.5.tar.gz"
+export QT_DIR="qt-everywhere-opensource-src-4.8.5"
 
 
 ###
@@ -181,6 +181,7 @@ function get_configure_make_install {
     # Cleaning a bit
     cleaning_a_bit $2 $4 >> $LOG_FILE 2>&1
 }
+
 
 
 ###
@@ -265,16 +266,16 @@ export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
 ###
 # Lapack and blas installation
 #
-pretty_print "Lapack and Blas"
-get_and_uncompress $LAPACK_URL $LAPACK_FILE zxf  >> $LOG_FILE 2>&1
-mkdir -p build
-cd build
-export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
-cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "BUILD_SHARED_LIBS=true" ../$LAPACK_DIR >> $LOG_FILE 2>&1
-gmake $MAKE_ARGS >> $LOG_FILE 2>&1
-gmake install >> $LOG_FILE 2>&1
+#pretty_print "Lapack and Blas"
+#get_and_uncompress $LAPACK_URL $LAPACK_FILE zxf  >> $LOG_FILE 2>&1
+#mkdir -p build
+#cd build
+#export CMAKE_INSTALL_PREFIX=$CONF_PREFIX
+#cmake -D "CMAKE_INSTALL_PREFIX:PATH=$CONF_PREFIX" -D "BUILD_SHARED_LIBS=true" ../$LAPACK_DIR >> $LOG_FILE 2>&1
+#gmake $MAKE_ARGS >> $LOG_FILE 2>&1
+#gmake install >> $LOG_FILE 2>&1
 
-cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
+#cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
 
 
 ###
@@ -283,8 +284,8 @@ cleaning_a_bit $LAPACK_FILE $LAPACK_DIR build
 pretty_print "Qt"
 get_and_uncompress $QT_URL $QT_FILE zxf  >> $LOG_FILE 2>&1
 cd $QT_DIR
-sed -i -e s/read\ acceptance/acceptance=yes/ configure
-./configure -prefix $CONF_PREFIX -opensource -shared -silent -optimized-qmake -nomake examples -nomake demos>> $LOG_FILE 2>&1
+sed -i -e "s/read\ acceptance/acceptance=yes/" configure
+./configure -prefix $CONF_PREFIX -opensource -shared -silent -optimized-qmake -nomake examples -nomake demos >> $LOG_FILE 2>&1
 gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
@@ -319,7 +320,7 @@ cd $TMPDIR
 pretty_print ""$(wc -l indep_package_list | cut -d' ' -f1)" packages :"
 for package in $(cat indep_package_list); do
     pretty_print "$package"
-    pip install -q $package; >> $LOG_FILE 2>&1
+    pip install -q --allow-external $package; >> $LOG_FILE 2>&1
 done
 
 
@@ -435,6 +436,6 @@ cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 # installing the packages that need vtk, hdf5, h5py and so on
 for package in ets etsproxy PySide; do
     pretty_print "$package"
-    pip install $package; >> $LOG_FILE 2>&1
+    pip install --allow-external $package; >> $LOG_FILE 2>&1
 done
 

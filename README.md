@@ -54,3 +54,4 @@ Before launching the script, make sure that you have the following installed :
 * tar
 * blas-devel and lapack-devel to compile scipy for instance
 * graphviz
+* gstreamer-plugins-base-devel
