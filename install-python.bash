@@ -276,7 +276,7 @@ export PYTHONPATH=$CONF_PREFIX
 export PATH=$PYTHONPATH/bin:$PATH
 export CPATH=$PYTHONPATH/include
 export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
-
+export PKG_CONFIG_PATH=$CONF_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
 
 ###
 # Lapack and blas installation
