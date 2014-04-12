@@ -347,7 +347,7 @@ cd $TMPDIR
 pretty_print ""$(wc -l indep_package_list | cut -d' ' -f1)" packages :"
 for package in $(cat indep_package_list); do
     pretty_print "$package"
-    pip install -q --allow-all-external $package; >> $LOG_FILE 2>&1
+    pip install -q --allow-unverified --allow-all-external $package; >> $LOG_FILE 2>&1
 done
 
 
@@ -470,6 +470,6 @@ cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 # installing the packages that need vtk, hdf5, h5py and so on
 for package in ets etsproxy PySide; do
     pretty_print "$package"
-    pip install --allow-all-external $package; >> $LOG_FILE 2>&1
+    pip install --allow-unverified --allow-all-external $package; >> $LOG_FILE 2>&1
 done
 
