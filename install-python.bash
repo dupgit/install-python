@@ -71,9 +71,9 @@ export VTK_DATA_URL="http://www.vtk.org/files/release/6.1/VTKData-6.1.0.tar.gz"
 export VTK_DATA_DIR="VTKData6.1.0"
 
 # wxpython :
-export WXPYTHON_URL=" http://downloads.sourceforge.net/wxpython/wxPython-src-2.9.4.0.tar.bz2"
-export WXPYTHON_FILE="wxPython-src-2.9.4.0.tar.bz2"
-export WXPYTHON_DIR="wxPython-src-2.9.4.0"
+export WXPYTHON_URL="http://downloads.sourceforge.net/wxpython/wxPython-src-3.0.0.0.tar.bz2"
+export WXPYTHON_FILE="wxPython-src-3.0.0.0.tar.bz2"
+export WXPYTHON_DIR="wxPython-src-3.0.0.0"
 
 # hdf5 library :
 export HDF5_URL="http://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.10-patch1.tar.gz"
