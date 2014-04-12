@@ -39,7 +39,7 @@ export TMPDIR="/dev/shm/install-python"
 export PYTHON_VERSION="2.7.6"
 
 # Path where to install python. Make sure that you have write access here.
-export CONF_PREFIX="/usr/local/python/$PYTHON_VERSION"
+export CONF_PREFIX="/home/dup/local/python/$PYTHON_VERSION"
 
 # FILE where we want to log things.
 export LOG_FILE="$TMPDIR/install-python.log"
@@ -116,6 +116,16 @@ export LAPACK_DIR="lapack-3.5.0"
 export QT_URL="http://download.qt-project.org/archive/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz"
 export QT_FILE="qt-everywhere-opensource-src-4.8.5.tar.gz"
 export QT_DIR="qt-everywhere-opensource-src-4.8.5"
+
+# PCRE (needed by SWIG)
+export PCRE_URL="http://sourceforge.net/projects/pcre/files/pcre/8.35/pcre-8.35.tar.gz/download"
+export PCRE_FILE="download"
+export PCRE_DIR="pcre-8.35"
+
+# SWIG
+export SWIG_URL="http://sourceforge.net/projects/swig/files/swig/swig-3.0.0/swig-3.0.0.tar.gz/download"
+export SWIG_FILE="download"
+export SWIG_DIR="swig-3.0.0"
 
 
 ###
@@ -290,6 +300,18 @@ gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
 cleaning_a_bit $QT_FILE $QT_DIR build
+
+
+###
+# PCRE
+#
+get_configure_make_install $PCRE_URL $PCRE_FILE zxf $PCRE_DIR "--prefix=$CONF_PREFIX"
+
+
+###
+# SWIG
+#
+get_configure_make_install $SWIG_URL $SWIG_FILE zxf $SWIG_DIR "--prefix=$CONF_PREFIX"
 
 
 ###
