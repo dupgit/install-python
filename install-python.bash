@@ -76,9 +76,9 @@ export WXPYTHON_FILE="wxPython-src-3.0.0.0.tar.bz2"
 export WXPYTHON_DIR="wxPython-src-3.0.0.0"
 
 # hdf5 library :
-export HDF5_URL="http://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.10-patch1.tar.gz"
-export HDF5_FILE="hdf5-1.8.10-patch1.tar.gz"
-export HDF5_DIR="hdf5-1.8.10-patch1"
+export HDF5_URL="http://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.12.tar.gz"
+export HDF5_FILE="hdf5-1.8.12.tar.gz"
+export HDF5_DIR="hdf5-1.8.12"
 
 # h5py
 export H5PY_URL="https://github.com/h5py/h5py.git"
