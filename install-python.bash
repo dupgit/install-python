@@ -371,7 +371,7 @@ cd $TMPDIR
 pretty_print ""$(wc -l indep_package_list | cut -d' ' -f1)" packages :"
 for package in $(cat indep_package_list); do
     pretty_print "$package"
-    pip install -q --allow-unverified --allow-all-external $package; >> $LOG_FILE 2>&1
+    pip install -q --allow-unverified --allow-external $package $package; >> $LOG_FILE 2>&1
 done
 
 
@@ -500,6 +500,6 @@ pip install --allow-unverified blockcanvas --allow-unverified etsdevtools --allo
 # installing the packages that need vtk, hdf5, h5py and so on
 for package in ets etsproxy PySide; do
     pretty_print "$package"
-    pip install --allow-unverified $package --allow-all-external $package; >> $LOG_FILE 2>&1
+    pip install --allow-unverified $package --allow-external $package $package; >> $LOG_FILE 2>&1
 done
 
