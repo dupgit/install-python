@@ -138,6 +138,11 @@ export LIBXML2_URL="ftp://xmlsoft.org/libxml2/libxml2-2.9.0.tar.gz"
 export LIBXML2_FILE="libxml2-2.9.0.tar.gz"
 export LIBXML2_DIR="libxml2-2.9.0"
 
+# LibXSLT
+export LIBXSLT_URL="ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz"
+export LIBXSLT_FILE="libxslt-1.1.28.tar.gz"
+export LIBXSLT_DIR="libxslt-1.1.28"
+
 ###
 # Begining of the script itself : function definitions
 #
@@ -287,8 +292,14 @@ export PKG_CONFIG_PATH=$CONF_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
 
 ###
 # LibXML2
+#
 get_configure_make_install $LIBXML2_URL $LIBXML2_FILE zxf $LIBXML2_DIR "--prefix=$CONF_PREFIX"
 
+
+###
+# LibXSLT
+#
+get_configure_make_install $LIBXSLT_URL $LIBXSLT_FILE zxf $LIBXSLT_DIR "--prefix=$CONF_PREFIX"
 
 
 ###
