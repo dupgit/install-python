@@ -133,6 +133,11 @@ export WXWIDGETS_URL="https://sourceforge.net/projects/wxwindows/files/3.0.0/wxW
 export WXWIDGETS_FILE="wxWidgets-3.0.0.tar.bz2"
 export WXWIDGET_DIR="wxWidgets-3.0.0"
 
+# LibXML2
+export LIBXML2_URL="ftp://xmlsoft.org/libxml2/libxml2-2.9.0.tar.gz"
+export LIBXML2_FILE="libxml2-2.9.0.tar.gz"
+export LIBXML2_DIR="libxml2-2.9.0"
+
 ###
 # Begining of the script itself : function definitions
 #
@@ -278,6 +283,13 @@ export PATH=$PYTHONPATH/bin:$PATH
 export CPATH=$PYTHONPATH/include
 export LD_LIBRARY_PATH=$PYTHONPATH/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=$CONF_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+
+
+###
+# LibXML2
+get_configure_make_install $LIBXML2_URL $LIBXML2_FILE zxf $LIBXML2_DIR "--prefix=$CONF_PREFIX"
+
+
 
 ###
 # Lapack and blas installation
