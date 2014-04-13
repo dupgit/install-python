@@ -135,8 +135,8 @@ export WXWIDGET_DIR="wxWidgets-3.0.0"
 
 # LibXML2
 export LIBXML2_URL="http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz"
-export LIBXML2_FILE="libxml2-2.9.0.tar.gz"
-export LIBXML2_DIR="libxml2-2.9.0"
+export LIBXML2_FILE="libxml2-2.9.1.tar.gz"
+export LIBXML2_DIR="libxml2-2.9.1"
 
 # LibXSLT
 export LIBXSLT_URL="http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz"
