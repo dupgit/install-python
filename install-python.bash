@@ -168,7 +168,7 @@ function cleaning_a_bit {
 function get_and_uncompress {
 
     cd $TMPDIR
-    wget -qc --no-check-certificate $1
+    wget -qc --no-check-certificate -O $2 $1
     tar $3 $2
 
 }
