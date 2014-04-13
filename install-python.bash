@@ -401,7 +401,7 @@ unset VTK_DATA_ROOT
 
 
 ###
-# Installing WxWidgets
+# Installing WxWidgets (needs gstreamer-devel)
 #
 get_configure_make_install $WXWIDGETS_URL $WXWIDGETS_FILE jxf $WXWIDGETS_DIR "--prefix=$CONF_PREFIX"
 
@@ -471,6 +471,7 @@ get_configure_make_install $SZIP_URL $SZIP_FILE zxf $SZIP_DIR "--prefix=$CONF_PR
 #
 get_configure_make_install $HDF4_URL $HDF4_FILE zxf $HDF4_DIR "--prefix=$CONF_PREFIX --enable-shared --disable-fortran --with-szlib=$CONF_PREFIX"
 
+
 ###
 # Installing pyhdf knowing that we have SZIP and hdf4 in $CONF_PREFIX
 #
@@ -485,6 +486,11 @@ unset LIBRARY_DIRS
 
 cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 
+###
+# Installing Blockcanvas
+#
+pretty_print "blockcanvas and its dependancies : codetools, chaco, etsdevtools, scimath, enable, PIL"
+pip install --allow-unverified blockcanvas --allow-unverified etsdevtools --allow-unverified scimath --allow-unverified enable --allow-unverified PIL --allow-all-external blockcanvas
 
 # Do we need this ?
 #echo "[install]" > $CONF_PREFIX/lib/python2.7/distutils/distutil.cfg
@@ -494,6 +500,6 @@ cleaning_a_bit $PYHDF_DIR $PYHDF_FILE
 # installing the packages that need vtk, hdf5, h5py and so on
 for package in ets etsproxy PySide; do
     pretty_print "$package"
-    pip install --allow-unverified --allow-all-external $package; >> $LOG_FILE 2>&1
+    pip install --allow-unverified $package --allow-all-external $package; >> $LOG_FILE 2>&1
 done
 
