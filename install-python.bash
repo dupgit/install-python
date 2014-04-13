@@ -303,6 +303,18 @@ get_configure_make_install $LIBXSLT_URL $LIBXSLT_FILE zxf $LIBXSLT_DIR "--prefix
 
 
 ###
+# PCRE
+#
+get_configure_make_install $PCRE_URL $PCRE_FILE zxf $PCRE_DIR "--prefix=$CONF_PREFIX"
+
+
+###
+# SWIG
+#
+get_configure_make_install $SWIG_URL $SWIG_FILE zxf $SWIG_DIR "--prefix=$CONF_PREFIX"
+
+
+###
 # Lapack and blas installation
 #
 pretty_print "Lapack and Blas"
@@ -329,18 +341,6 @@ gmake $MAKE_ARGS >> $LOG_FILE 2>&1
 gmake install >> $LOG_FILE 2>&1
 
 cleaning_a_bit $QT_FILE $QT_DIR build
-
-
-###
-# PCRE
-#
-get_configure_make_install $PCRE_URL $PCRE_FILE zxf $PCRE_DIR "--prefix=$CONF_PREFIX"
-
-
-###
-# SWIG
-#
-get_configure_make_install $SWIG_URL $SWIG_FILE zxf $SWIG_DIR "--prefix=$CONF_PREFIX"
 
 
 ###
